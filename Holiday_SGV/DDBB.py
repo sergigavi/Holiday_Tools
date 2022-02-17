@@ -19,7 +19,7 @@ class DDBB():
         self.cursor = self.conexion.cursor()
         self.cursor.execute("CREATE DATABASE IF NOT EXISTS HolydayToolsDDBB")
         self.cursor.execute("USE HolydayToolsDDBB")
-        self.cargarDatos()
+        #self.cargarDatos()
 
     def getNumeroUsuarios(self):
         self.cursor.execute("SELECT COUNT(usuarios.Usuario) FROM usuarios")

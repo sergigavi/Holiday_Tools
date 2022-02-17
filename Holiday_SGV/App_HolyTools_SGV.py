@@ -47,7 +47,6 @@ def comprobarUsuario():
     for i in range(baseDeDatos.getNumeroUsuarios()):
         userActual = baseDeDatos.hacerQuery("SELECT Usuario FROM usuarios")[i][0]
         if userActual == txtUsuario.get():
-            print(userActual)
             existe = True
             
         
@@ -59,10 +58,9 @@ def comprobarContrasenna():
     
     contrasennaCoincide:bool = False
     
-    contrasennabuena = baseDeDatos.hacerQuery("SELECT Contraseña FROM usuarios WHERE Usuario LIKE '" + txtUsuario.get() +"'")
+    contrasennabuena = baseDeDatos.hacerQuery("SELECT Contraseña FROM usuarios WHERE Usuario LIKE '" + txtUsuario.get() +"'")[0][0]
     
     if txtContrasenna.get() == contrasennabuena:
-        print("contrasenna coincide")
         contrasennaCoincide = True
     
     return contrasennaCoincide
