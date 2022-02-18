@@ -114,16 +114,16 @@ btnMostrarContraseña = ttk.Button(mainVentana, image=fotoBoton, command=mostrar
 btnMostrarContraseña.grid(row=3, column=1, padx=10,sticky="N", pady=(0,10), rowspan=2)
 
 
-frameBotones = ttk.Frame(mainVentana)
+frameBotones = tk.Frame(mainVentana)
 frameBotones.grid(row=4, column=0, padx=10, pady=10)
-#frameBotones.config(bg="blue")
+frameBotones.config(bg="lightgrey")
 #frameBotones["bg"]="blue"
 
 btnEntrar = ttk.Button(frameBotones, text="Entrar", width=30, command=iniciarSesion)
 btnEntrar.grid(row=0, column=0, padx=10, pady=10)
 
 btnContrasennaOlvidada = ttk.Button(frameBotones, text="He olvidado mi contraseña", width=30, command=heOlvidadoMiContrasenna)
-btnContrasennaOlvidada.grid(row=1, column=0, padx=10, pady=2)
+btnContrasennaOlvidada.grid(row=1, column=0, padx=10, pady=10)
 
 
 
