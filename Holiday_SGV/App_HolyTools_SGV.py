@@ -9,7 +9,6 @@ Created on 15 feb 2022
 
 import tkinter as tk
 from tkinter import ttk,messagebox, scrolledtext
-from PIL.ImageTk import PhotoImage
 from Holiday_SGV.DDBB import DDBB
 
 #
@@ -117,6 +116,8 @@ btnMostrarContraseña.grid(row=3, column=1, padx=10,sticky="N", pady=(0,10), row
 
 frameBotones = ttk.Frame(mainVentana)
 frameBotones.grid(row=4, column=0, padx=10, pady=10)
+#frameBotones.config(bg="blue")
+#frameBotones["bg"]="blue"
 
 btnEntrar = ttk.Button(frameBotones, text="Entrar", width=30, command=iniciarSesion)
 btnEntrar.grid(row=0, column=0, padx=10, pady=10)
