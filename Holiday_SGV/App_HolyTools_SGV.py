@@ -112,7 +112,7 @@ f = tk.PhotoImage(file = "verContrasenna.png")
 fotoBoton = f.subsample(20, 20) 
 
 btnMostrarContraseña = ttk.Button(mainVentana, image=fotoBoton, command=mostrarContrasenna)
-btnMostrarContraseña.grid(row=3, column=1, padx=10, pady=10)
+btnMostrarContraseña.grid(row=3, column=1, padx=10,sticky="N", pady=(0,10), rowspan=2)
 
 
 frameBotones = ttk.Frame(mainVentana)
