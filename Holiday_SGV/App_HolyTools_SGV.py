@@ -25,6 +25,12 @@ cMostrar:bool = False;
 
 #
 
+def minimizarVentana(v):
+    v.iconify()
+
+def desMinimizarVentana(v):
+    v.deiconify()
+
 def mostrarContrasenna():
     global cMostrar, entryContrasenna
     
@@ -37,6 +43,9 @@ def mostrarContrasenna():
         entryContrasenna.config(show="")
     else:
         entryContrasenna.config(show="*")
+        
+def entrarAlPanel():
+    pass
         
 def comprobarUsuario():
     existe:bool = False
@@ -71,6 +80,8 @@ def iniciarSesion():
     else:
         if comprobarContrasenna():
             messagebox.showinfo("Login succesful", "Inicio de sesion correcto")
+            entrarAlPanel()
+            minimizarVentana(mainVentana) #le paso la ventana que quiero cerrar
         else:
             messagebox.showerror("Contraseña errónea", "La contraseña introducida no coincide")
         
@@ -124,6 +135,9 @@ btnEntrar.grid(row=0, column=0, padx=10, pady=10)
 
 btnContrasennaOlvidada = ttk.Button(frameBotones, text="He olvidado mi contraseña", width=30, command=heOlvidadoMiContrasenna)
 btnContrasennaOlvidada.grid(row=1, column=0, padx=10, pady=10)
+
+
+
 
 
 
