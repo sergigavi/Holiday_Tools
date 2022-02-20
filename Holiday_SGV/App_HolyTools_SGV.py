@@ -10,6 +10,7 @@ Created on 15 feb 2022
 import tkinter as tk
 from tkinter import ttk,messagebox, scrolledtext
 from Holiday_SGV.DDBB import DDBB
+from threading import Thread
 
 #
 
@@ -32,7 +33,7 @@ def desMinimizarVentana(v):
     v.deiconify()
 
 def mostrarContrasenna():
-    global cMostrar, entryContrasenna
+    #global cMostrar, entryContrasenna
     
     if not cMostrar:
         cMostrar = True
@@ -43,14 +44,44 @@ def mostrarContrasenna():
         entryContrasenna.config(show="")
     else:
         entryContrasenna.config(show="*")
+    
+#Esta funcion se encarga de vaciar los valores del formulario de inicio de sesion, por si se van a iniciar varias a la vez, así no aparecen los datos del anterior
+def limpiarLogin():
+    txtUsuario.set("")
+    txtContrasenna.set("")
+    
+def abrirPanelAdmin():
+    mainVentanaAdmin = tk.Toplevel()
+    mainVentanaAdmin.title("Holiday Tools - Sergio García - 2ºDAM - (Admin) " + txtUsuario.get())
+    limpiarLogin()
+    mainVentanaAdmin.geometry("600x200")
+    mainVentanaAdmin.resizable(False, False)
+    
+
+def abrirPanelUser():
+    mainVentanaUser = tk.Toplevel()
+    mainVentanaUser.title("Holiday Tools - Sergio García - 2ºDAM - (Empleado) " + txtUsuario.get())
+    limpiarLogin()
+    mainVentanaUser.geometry("600x200")
+    mainVentanaUser.resizable(False, False)
+    
         
 def entrarAlPanel():
-    pass
+    #comprobar el tipo de usuario que ha iniciado sesion y dependiendo abrir la vista de usuario o la vista de administrador
+    tipo = baseDeDatos.hacerQuery("SELECT Tipo FROM usuarios WHERE usuarios.Usuario LIKE '" + txtUsuario.get() + "'")[0][0]
+    
+    if tipo == "administrador":
+        hiloAdmin = Thread(target=abrirPanelAdmin, name="Hiloadmin")
+        hiloAdmin.start()
+        
+    else: #tipo == "empleado"
+        hiloUser = Thread(target=abrirPanelUser, name="Hilouser")
+        hiloUser.start()
         
 def comprobarUsuario():
     existe:bool = False
     
-    global txtUsuario
+    #global txtUsuario
     
     for i in range(baseDeDatos.getNumeroUsuarios()):
         userActual = baseDeDatos.hacerQuery("SELECT Usuario FROM usuarios")[i][0]
@@ -62,7 +93,7 @@ def comprobarUsuario():
 
 def comprobarContrasenna():
     
-    global txtUsuario, txtContrasenna
+    #global txtUsuario, txtContrasenna
     
     contrasennaCoincide:bool = False
     
@@ -79,7 +110,8 @@ def iniciarSesion():
         messagebox.showerror("Usuario erróneo", "El usuario introducido no está registrado")
     else:
         if comprobarContrasenna():
-            messagebox.showinfo("Login succesful", "Inicio de sesion correcto")
+            oleHasIniciao = messagebox.showinfo("Login succesful", "Inicio de sesion correcto")
+            #oleHasIniciao.kill()
             entrarAlPanel()
             minimizarVentana(mainVentana) #le paso la ventana que quiero cerrar
         else:
