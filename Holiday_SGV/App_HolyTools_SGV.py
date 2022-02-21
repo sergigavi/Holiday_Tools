@@ -9,7 +9,9 @@ Created on 15 feb 2022
 
 import tkinter as tk
 from tkinter import ttk,messagebox, scrolledtext
+from tkinter.messagebox import Message 
 from Holiday_SGV.DDBB import DDBB
+#from functools import partial #para poder pasar parametros a los commands #no me funciona asi que uso funciones lambda
 from threading import Thread
 
 #
@@ -33,7 +35,7 @@ def desMinimizarVentana(v):
     v.deiconify()
 
 def mostrarContrasenna():
-    #global cMostrar, entryContrasenna
+    global cMostrar, entryContrasenna
     
     if not cMostrar:
         cMostrar = True
@@ -65,6 +67,59 @@ def abrirPanelUser():
     mainVentanaUser.geometry("600x200")
     mainVentanaUser.resizable(False, False)
     
+def cambiarContrasenna(contra1, contra2):
+    global txtUsuario
+    
+    print("Usuario: " + txtUsuario.get() + "\n contra1: " + contra1 + "\ncontra2: "+ contra2)
+    
+    if contra1 == contra2:
+        baseDeDatos.cambiarContrasenna(txtUsuario.get(), contra1)
+        messagebox.showinfo(title="Update correcto", message="Se ha cambiado la contraseña de " + txtUsuario.get() + " correctamente")
+    else:
+        messagebox.showerror(title="Error al cambiar las contraseñas", message="Las contraseñas no coinciden")
+        
+    
+
+def heOlvidadoLaContrasenna():
+    global txtUsuario
+    
+    if comprobarUsuario():
+        
+        mainVentanaOlvidoContrasenna = tk.Toplevel()
+        mainVentanaOlvidoContrasenna.title("Holiday Tools - Sergio García - 2ºDAM - Restablecer Contraseña")
+        mainVentanaOlvidoContrasenna.geometry("325x225")
+        mainVentanaOlvidoContrasenna.resizable(False, False)
+        
+        lblContra1 = ttk.Label(mainVentanaOlvidoContrasenna, text="Contraseña", font=("Helvetica", 16), foreground="#0B67D9")
+        lblContra1.grid(row=0, column=0, padx=10, pady=(15,3), sticky="W")
+        
+        txtContra1 = tk.StringVar()
+        entryContra1 = ttk.Entry(mainVentanaOlvidoContrasenna, show="*", textvariable=txtContra1, width=38)
+        entryContra1.grid(row=1, column=0, padx=10, pady=0)
+        
+        
+        lblContra2 = ttk.Label(mainVentanaOlvidoContrasenna, text="Reescriba la contraseña", font=("Helvetica", 16), foreground="#0B67D9")
+        lblContra2.grid(row=2, column=0, padx=10,pady=(15,3), sticky="W")
+         
+        
+        txtContra2 = tk.StringVar()
+        entryContra2 = ttk.Entry(mainVentanaOlvidoContrasenna, show="*", textvariable=txtContra2, width=38)
+        entryContra2.grid(row=3, column=0, padx=10, pady=0)
+        
+        frameBtn = tk.Frame(mainVentanaOlvidoContrasenna)
+        frameBtn.grid(row=4, column=0, padx=10, pady=10)
+        frameBtn.config(bg="lightgrey")
+        
+        btnAceptarCambioContra = ttk.Button(frameBtn, text="Aceptar", width=30, command=lambda:cambiarContrasenna(txtContra1.get(), txtContra2.get()))
+        btnAceptarCambioContra.grid(row=0, column=0, padx=10, pady=10)
+        
+        #mainVentanaOlvidoContrasenna.destroy()
+    
+    else:
+        messagebox.showerror(title="Error al restablecer", message="Debes introducir un usuario válido antes de reestablecer su contraseña")
+    
+    
+    
         
 def entrarAlPanel():
     #comprobar el tipo de usuario que ha iniciado sesion y dependiendo abrir la vista de usuario o la vista de administrador
@@ -81,7 +136,7 @@ def entrarAlPanel():
 def comprobarUsuario():
     existe:bool = False
     
-    #global txtUsuario
+    global txtUsuario
     
     for i in range(baseDeDatos.getNumeroUsuarios()):
         userActual = baseDeDatos.hacerQuery("SELECT Usuario FROM usuarios")[i][0]
@@ -93,7 +148,7 @@ def comprobarUsuario():
 
 def comprobarContrasenna():
     
-    #global txtUsuario, txtContrasenna
+    global txtUsuario, txtContrasenna
     
     contrasennaCoincide:bool = False
     
@@ -103,6 +158,13 @@ def comprobarContrasenna():
         contrasennaCoincide = True
     
     return contrasennaCoincide
+
+def mostrarLoginSuccesful():
+    loginSuccesful = tk.Toplevel()
+    loginSuccesful.title('Login succesful')
+    loginSuccesful.geometry("200x100")
+    tk.Message(loginSuccesful, text="Inicio de sesion correcto", padx=20, pady=20).pack()
+    loginSuccesful.after(2000, loginSuccesful.destroy)
     
 def iniciarSesion():
     
@@ -110,18 +172,16 @@ def iniciarSesion():
         messagebox.showerror("Usuario erróneo", "El usuario introducido no está registrado")
     else:
         if comprobarContrasenna():
-            oleHasIniciao = messagebox.showinfo("Login succesful", "Inicio de sesion correcto")
-            #oleHasIniciao.kill()
+            #messagebox.showinfo("Login succesful", "Inicio de sesion correcto")
+            #print("Inicio de sesion correcto")
+            mostrarLoginSuccesful()
             entrarAlPanel()
             minimizarVentana(mainVentana) #le paso la ventana que quiero cerrar
         else:
             messagebox.showerror("Contraseña errónea", "La contraseña introducida no coincide")
         
         
-    
 
-def heOlvidadoMiContrasenna():
-    pass
 
 #
 
@@ -165,7 +225,7 @@ frameBotones.config(bg="lightgrey")
 btnEntrar = ttk.Button(frameBotones, text="Entrar", width=30, command=iniciarSesion)
 btnEntrar.grid(row=0, column=0, padx=10, pady=10)
 
-btnContrasennaOlvidada = ttk.Button(frameBotones, text="He olvidado mi contraseña", width=30, command=heOlvidadoMiContrasenna)
+btnContrasennaOlvidada = ttk.Button(frameBotones, text="He olvidado mi contraseña", width=30, command=heOlvidadoLaContrasenna)
 btnContrasennaOlvidada.grid(row=1, column=0, padx=10, pady=10)
 
 

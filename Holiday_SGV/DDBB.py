@@ -29,6 +29,10 @@ class DDBB():
         self.cursor.execute(query)
         return self.cursor.fetchall()
     
+    def cambiarContrasenna(self, usuario, contrasenna):      
+        self.cursor.execute("UPDATE usuarios SET usuarios.Contraseña = '" + contrasenna + "' WHERE (usuarios.Usuario = '" + usuario + "');")    
+        self.conexion.commit()
+        
     def cargarDatos(self):
         
         #Creo las tablas
@@ -55,7 +59,7 @@ class DDBB():
         self.cursor.execute('''INSERT INTO usuarios VALUES ('MarioSantos','123abc','administrador');''')
         self.cursor.execute('''INSERT INTO usuarios VALUES ('Sergio','123abc','administrador');''')
         self.cursor.execute('''INSERT INTO usuarios VALUES ('Pizarroso','vegano','empleado');''')
-        self.cursor.execute('''INSERT INTO usuarios VALUES ('Jorge','admin','empleado');''')
+        self.cursor.execute('''INSERT INTO usuarios VALUES ('Jorge','chispas','empleado');''')
         
         
         self.conexion.commit()
