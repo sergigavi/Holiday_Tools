@@ -59,6 +59,12 @@ def abrirPanelAdmin():
     mainVentanaAdmin.geometry("600x200")
     mainVentanaAdmin.resizable(False, False)
     
+    ttk.Label(mainVentanaAdmin, text="Empleados", font=(18), foreground="#00E013").grid(row=0, column=0, padx=10, pady=10, sticky="N")
+    
+    frameAdmin = tk.Frame(mainVentanaAdmin)
+    frameAdmin.grid(row=0, column=0, padx=10, pady=10)
+    frameAdmin.config(bg="#6DE069")
+    
 
 def abrirPanelUser():
     mainVentanaUser = tk.Toplevel()
