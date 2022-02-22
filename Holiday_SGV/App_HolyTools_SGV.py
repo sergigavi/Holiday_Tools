@@ -20,7 +20,7 @@ baseDeDatos = DDBB()
 
 mainVentana = tk.Tk()
 mainVentana.title("Holiday Tools - Sergio García - 2ºDAM")
-mainVentana.iconbitmap('icono.ico')
+mainVentana.iconbitmap('./recursos/icono.ico')
 mainVentana.geometry("375x275")
 mainVentana.resizable(False, False)
 
@@ -59,11 +59,28 @@ def abrirPanelAdmin():
     mainVentanaAdmin.geometry("600x200")
     mainVentanaAdmin.resizable(False, False)
     
-    ttk.Label(mainVentanaAdmin, text="Empleados", font=(18), foreground="#00E013").grid(row=0, column=0, padx=10, pady=10, sticky="N")
+    ttk.Label(mainVentanaAdmin, text="Administrador", font=("bold",18), foreground="#FF0DE3").grid(row=0, column=0, padx=10, pady=10, sticky="S")
     
-    frameAdmin = tk.Frame(mainVentanaAdmin)
-    frameAdmin.grid(row=0, column=0, padx=10, pady=10)
-    frameAdmin.config(bg="#6DE069")
+    frameAdmin = tk.Frame(mainVentanaAdmin, height=8, width=580)
+    frameAdmin.grid(row=1, column=0, padx=10, pady=10)
+    frameAdmin.config(bg="#FF0DE3")
+    
+    #lupa
+    fotoLupa = tk.PhotoImage(file='./recursos/lupa.png')
+    lblLupa = ttk.Label(mainVentanaAdmin, image=fotoLupa)
+    lblLupa.grid(row=2, column=0, padx=10, pady=10, sticky="S")
+    #lblLupa.place(x=50, y=50)
+    
+    
+    #perfil
+    fotoPerfil = tk.PhotoImage(file='./recursos/usuario.png')
+    lblPerfil = ttk.Label(mainVentanaAdmin, image=fotoPerfil)
+    lblPerfil.place(x=60, y=50)
+    
+    #salir
+    fotoSalir = tk.PhotoImage(file='./recursos/salir.png')
+    lblSalir = ttk.Label(mainVentanaAdmin, image=fotoSalir)
+    lblSalir.place(x=70, y=50)
     
 
 def abrirPanelUser():
@@ -72,6 +89,12 @@ def abrirPanelUser():
     limpiarLogin()
     mainVentanaUser.geometry("600x200")
     mainVentanaUser.resizable(False, False)
+    
+    ttk.Label(mainVentanaUser, text="Empleados", font=("bold",18), foreground="#00E013").grid(row=0, column=0, padx=10, pady=10, sticky="S")
+    
+    frameUser = tk.Frame(mainVentanaUser, height=8, width=580)
+    frameUser.grid(row=1, column=0, padx=10, pady=10)
+    frameUser.config(bg="#6DE069")
     
 def cambiarContrasenna(contra1, contra2):
     global txtUsuario
@@ -96,7 +119,7 @@ def heOlvidadoLaContrasenna():
         mainVentanaOlvidoContrasenna.geometry("325x225")
         mainVentanaOlvidoContrasenna.resizable(False, False)
         
-        lblContra1 = ttk.Label(mainVentanaOlvidoContrasenna, text="Contraseña", font=("Helvetica", 16), foreground="#0B67D9")
+        lblContra1 = ttk.Label(mainVentanaOlvidoContrasenna, text="Contraseña", font=("Helvetica", 16, "bold"), foreground="#0B67D9")
         lblContra1.grid(row=0, column=0, padx=10, pady=(15,3), sticky="W")
         
         txtContra1 = tk.StringVar()
@@ -104,7 +127,7 @@ def heOlvidadoLaContrasenna():
         entryContra1.grid(row=1, column=0, padx=10, pady=0)
         
         
-        lblContra2 = ttk.Label(mainVentanaOlvidoContrasenna, text="Reescriba la contraseña", font=("Helvetica", 16), foreground="#0B67D9")
+        lblContra2 = ttk.Label(mainVentanaOlvidoContrasenna, text="Reescriba la contraseña", font=("Helvetica", 16, "bold"), foreground="#0B67D9")
         lblContra2.grid(row=2, column=0, padx=10,pady=(15,3), sticky="W")
          
         
@@ -116,7 +139,7 @@ def heOlvidadoLaContrasenna():
         frameBtn.grid(row=4, column=0, padx=10, pady=10)
         frameBtn.config(bg="lightgrey")
         
-        btnAceptarCambioContra = ttk.Button(frameBtn, text="Aceptar", width=30, command=lambda:cambiarContrasenna(txtContra1.get(), txtContra2.get()))
+        btnAceptarCambioContra = ttk.Button(frameBtn, text="Aceptar", width=30, command=lambda:cambiarContrasenna(txtContra1.get(), txtContra2.get()))  #expresion lambda para que me deje pasarle las contraseñas de parametro
         btnAceptarCambioContra.grid(row=0, column=0, padx=10, pady=10)
         
         #mainVentanaOlvidoContrasenna.destroy()
@@ -194,7 +217,7 @@ def iniciarSesion():
 lblUsuario = ttk.Label(
     mainVentana,
     text="Usuario",
-    font=("Helvetica", 16),
+    font=("Helvetica", 16, "bold"),
     foreground="#0B67D9")
 lblUsuario.grid(row=0, column=0, padx=10, pady=(15,3), sticky="W")
 
@@ -206,7 +229,7 @@ entryUsuario.grid(row=1, column=0, padx=10, pady=0)
 lblContrasenna = ttk.Label(
     mainVentana,
     text="Contraseña",
-    font=("Helvetica", 16),
+    font=("Helvetica", 16, "bold"),
     foreground="#0B67D9")
 lblContrasenna.grid(row=2, column=0, padx=10,pady=(15,3), sticky="W")
  
@@ -216,7 +239,7 @@ entryContrasenna = ttk.Entry(mainVentana, show="*", textvariable=txtContrasenna,
 entryContrasenna.grid(row=3, column=0, padx=10, pady=0)
 
 
-f = tk.PhotoImage(file = "verContrasenna.png")
+f = tk.PhotoImage(file = "./recursos/verContrasenna.png")
 fotoBoton = f.subsample(20, 20) 
 
 btnMostrarContraseña = ttk.Button(mainVentana, image=fotoBoton, command=mostrarContrasenna)
