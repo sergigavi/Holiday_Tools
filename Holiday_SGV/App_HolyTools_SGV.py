@@ -57,30 +57,31 @@ def abrirPanelAdmin():
     mainVentanaAdmin.title("Holiday Tools - Sergio García - 2ºDAM - (Admin) " + txtUsuario.get())
     limpiarLogin()
     mainVentanaAdmin.geometry("600x200")
-    mainVentanaAdmin.resizable(False, False)
+    #mainVentanaAdmin.resizable(False, False)
     
-    ttk.Label(mainVentanaAdmin, text="Administrador", font=("bold",18), foreground="#FF0DE3").grid(row=0, column=0, padx=10, pady=10, sticky="S")
+    ttk.Label(mainVentanaAdmin, text="Administrador", font=("bold",18), foreground="#FF0DE3").grid(row=0, column=0, padx=10, pady=10, columnspan=3, sticky="S")
     
     frameAdmin = tk.Frame(mainVentanaAdmin, height=8, width=580)
-    frameAdmin.grid(row=1, column=0, padx=10, pady=10)
+    frameAdmin.grid(row=1, column=0, padx=10, pady=10, columnspan=3)
     frameAdmin.config(bg="#FF0DE3")
     
     #lupa
-    fotoLupa = tk.PhotoImage(file='./recursos/lupa.png')
-    lblLupa = ttk.Label(mainVentanaAdmin, image=fotoLupa)
-    lblLupa.grid(row=2, column=0, padx=10, pady=10, sticky="S")
-    #lblLupa.place(x=50, y=50)
+    l = tk.PhotoImage(file='./recursos/lupa.png')
+    fotoLupa = l.subsample(2,2) 
+    btnLupa = ttk.Button(mainVentanaAdmin, image=fotoLupa)
+    btnLupa.grid(row=2, column=0, padx=10, pady=10, sticky="S")
     
-    
-    #perfil
-    fotoPerfil = tk.PhotoImage(file='./recursos/usuario.png')
-    lblPerfil = ttk.Label(mainVentanaAdmin, image=fotoPerfil)
-    lblPerfil.place(x=60, y=50)
+    #grafico barras
+    b = tk.PhotoImage(file='./recursos/graficoBarras.png')
+    fotoBarras = b.subsample(2, 2) 
+    btnBarras = ttk.Button(mainVentanaAdmin, image=fotoBarras)
+    btnBarras.grid(row=2, column=1, padx=10, pady=10, sticky="S")
     
     #salir
-    fotoSalir = tk.PhotoImage(file='./recursos/salir.png')
-    lblSalir = ttk.Label(mainVentanaAdmin, image=fotoSalir)
-    lblSalir.place(x=70, y=50)
+    s = tk.PhotoImage(file='./recursos/salir.png')
+    fotoSalir = s.subsample(2, 2) 
+    btnSalir = ttk.Button(mainVentanaAdmin, image=fotoSalir)
+    btnSalir.grid(row=2, column=2, padx=10, pady=10, sticky="S")
     
 
 def abrirPanelUser():
@@ -90,11 +91,29 @@ def abrirPanelUser():
     mainVentanaUser.geometry("600x200")
     mainVentanaUser.resizable(False, False)
     
-    ttk.Label(mainVentanaUser, text="Empleados", font=("bold",18), foreground="#00E013").grid(row=0, column=0, padx=10, pady=10, sticky="S")
+    ttk.Label(mainVentanaUser, text="Empleados", font=("bold",18), foreground="#00E013").grid(row=0, column=0, padx=10, pady=10, columnspan=3, sticky="S")
     
     frameUser = tk.Frame(mainVentanaUser, height=8, width=580)
-    frameUser.grid(row=1, column=0, padx=10, pady=10)
+    frameUser.grid(row=1, column=0, padx=10, pady=10, columnspan=3)
     frameUser.config(bg="#6DE069")
+    
+    #lupa
+    l = tk.PhotoImage(file='./recursos/lupa.png')
+    fotoLupa = l.subsample(2,2) 
+    btnLupa = ttk.Button(mainVentanaUser, image=fotoLupa)
+    btnLupa.grid(row=2, column=0, padx=10, pady=10, sticky="S")
+    
+    #perfil
+    p = tk.PhotoImage(file='./recursos/usuario.png')
+    fotoPerfil = p.subsample(2, 2) 
+    btnPerfil = ttk.Button(mainVentanaUser, image=fotoPerfil)
+    btnPerfil.grid(row=2, column=1, padx=10, pady=10, sticky="S")
+    
+    #salir
+    s = tk.PhotoImage(file='./recursos/salir.png')
+    fotoSalir = s.subsample(2, 2) 
+    btnSalir = ttk.Button(mainVentanaUser, image=fotoSalir)
+    btnSalir.grid(row=2, column=2, padx=10, pady=10, sticky="S")
     
 def cambiarContrasenna(contra1, contra2):
     global txtUsuario
