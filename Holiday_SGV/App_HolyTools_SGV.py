@@ -52,7 +52,30 @@ def limpiarLogin():
     txtUsuario.set("")
     txtContrasenna.set("")
     
+def cargarImagenes():
+    global fotoVillablanca, fotoLupa, fotoBarras, fotoSalir, fotoPerfil
+    
+    v = tk.PhotoImage(file='./recursos/iesVillablanca.png')
+    fotoVillablanca = v.subsample(10)
+    
+    l = tk.PhotoImage(file='./recursos/lupa.png')
+    fotoLupa = l.subsample(14)
+    
+    b = tk.PhotoImage(file='./recursos/graficoBarras.png')
+    fotoBarras = b.subsample(14)
+    
+    s = tk.PhotoImage(file='./recursos/salir.png')
+    fotoSalir = s.subsample(14)
+    
+    p = tk.PhotoImage(file='./recursos/usuario.png')
+    fotoPerfil = p.subsample(14)
+    
+    
+    
 def abrirPanelAdmin():
+    
+    global fotoVillablanca, fotoLupa, fotoBarras, fotoSalir
+    
     mainVentanaAdmin = tk.Toplevel()
     mainVentanaAdmin.title("Holiday Tools - Sergio García - 2ºDAM - (Admin) " + txtUsuario.get())
     limpiarLogin()
@@ -65,26 +88,28 @@ def abrirPanelAdmin():
     frameAdmin.grid(row=1, column=0, padx=10, pady=10, columnspan=3)
     frameAdmin.config(bg="#FF0DE3")
     
+    #fotoVillablanca
+    villa = tk.Label(mainVentanaAdmin, image=fotoVillablanca)
+    villa.place(x=520, y=10)
+    
     #lupa
-    l = tk.PhotoImage(file='./recursos/lupa.png')
-    fotoLupa = l.subsample(2,2) 
-    btnLupa = ttk.Button(mainVentanaAdmin, image=fotoLupa)
+    btnLupa = ttk.Button(mainVentanaAdmin, image=fotoLupa, width=30)
     btnLupa.grid(row=2, column=0, padx=10, pady=10, sticky="S")
     
     #grafico barras
-    b = tk.PhotoImage(file='./recursos/graficoBarras.png')
-    fotoBarras = b.subsample(2, 2) 
     btnBarras = ttk.Button(mainVentanaAdmin, image=fotoBarras)
     btnBarras.grid(row=2, column=1, padx=10, pady=10, sticky="S")
     
     #salir
-    s = tk.PhotoImage(file='./recursos/salir.png')
-    fotoSalir = s.subsample(2, 2) 
     btnSalir = ttk.Button(mainVentanaAdmin, image=fotoSalir)
     btnSalir.grid(row=2, column=2, padx=10, pady=10, sticky="S")
     
 
+
 def abrirPanelUser():
+    
+    global fotoVillablanca, fotoLupa, fotoPerfil, fotoSalir
+    
     mainVentanaUser = tk.Toplevel()
     mainVentanaUser.title("Holiday Tools - Sergio García - 2ºDAM - (Empleado) " + txtUsuario.get())
     limpiarLogin()
@@ -97,21 +122,19 @@ def abrirPanelUser():
     frameUser.grid(row=1, column=0, padx=10, pady=10, columnspan=3)
     frameUser.config(bg="#6DE069")
     
+    #fotoVillablanca
+    villa = tk.Label(mainVentanaUser, image=fotoVillablanca)
+    villa.place(x=520, y=10)
+    
     #lupa
-    l = tk.PhotoImage(file='./recursos/lupa.png')
-    fotoLupa = l.subsample(2,2) 
     btnLupa = ttk.Button(mainVentanaUser, image=fotoLupa)
     btnLupa.grid(row=2, column=0, padx=10, pady=10, sticky="S")
     
     #perfil
-    p = tk.PhotoImage(file='./recursos/usuario.png')
-    fotoPerfil = p.subsample(2, 2) 
     btnPerfil = ttk.Button(mainVentanaUser, image=fotoPerfil)
     btnPerfil.grid(row=2, column=1, padx=10, pady=10, sticky="S")
     
     #salir
-    s = tk.PhotoImage(file='./recursos/salir.png')
-    fotoSalir = s.subsample(2, 2) 
     btnSalir = ttk.Button(mainVentanaUser, image=fotoSalir)
     btnSalir.grid(row=2, column=2, padx=10, pady=10, sticky="S")
     
@@ -212,7 +235,7 @@ def mostrarLoginSuccesful():
     loginSuccesful.title('Login succesful')
     loginSuccesful.geometry("200x100")
     tk.Message(loginSuccesful, text="Inicio de sesion correcto", padx=20, pady=20).pack()
-    loginSuccesful.after(2000, loginSuccesful.destroy)
+    loginSuccesful.after(1500, loginSuccesful.destroy)
     
 def iniciarSesion():
     
@@ -260,6 +283,8 @@ entryContrasenna.grid(row=3, column=0, padx=10, pady=0)
 
 f = tk.PhotoImage(file = "./recursos/verContrasenna.png")
 fotoBoton = f.subsample(20, 20) 
+
+cargarImagenes()
 
 btnMostrarContraseña = ttk.Button(mainVentana, image=fotoBoton, command=mostrarContrasenna)
 btnMostrarContraseña.grid(row=3, column=1, padx=10,sticky="N", pady=(0,10), rowspan=2)
