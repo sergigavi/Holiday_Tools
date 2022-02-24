@@ -28,7 +28,7 @@ cMostrar:bool = False;
 
 #
 
-def minimizarVentana(v):
+def minimizarVentana(v): #preguntar a mario
     v.iconify()
 
 def desMinimizarVentana(v):
@@ -59,18 +59,24 @@ def cargarImagenes():
     fotoVillablanca = v.subsample(10)
     
     l = tk.PhotoImage(file='./recursos/lupa.png')
-    fotoLupa = l.subsample(14)
+    fotoLupa = l.subsample(8)
     
     b = tk.PhotoImage(file='./recursos/graficoBarras.png')
-    fotoBarras = b.subsample(14)
+    fotoBarras = b.subsample(8)
     
     s = tk.PhotoImage(file='./recursos/salir.png')
-    fotoSalir = s.subsample(14)
+    fotoSalir = s.subsample(13)
     
     p = tk.PhotoImage(file='./recursos/usuario.png')
-    fotoPerfil = p.subsample(14)
+    fotoPerfil = p.subsample(10)
     
+def cerrarPanel(ventana):
     
+    global mainVentana
+    
+    ventana.destroy()
+    desMinimizarVentana(mainVentana)
+
     
 def abrirPanelAdmin():
     
@@ -80,7 +86,7 @@ def abrirPanelAdmin():
     mainVentanaAdmin.title("Holiday Tools - Sergio García - 2ºDAM - (Admin) " + txtUsuario.get())
     limpiarLogin()
     mainVentanaAdmin.geometry("600x200")
-    #mainVentanaAdmin.resizable(False, False)
+    mainVentanaAdmin.resizable(False, False)
     
     ttk.Label(mainVentanaAdmin, text="Administrador", font=("bold",18), foreground="#FF0DE3").grid(row=0, column=0, padx=10, pady=10, columnspan=3, sticky="S")
     
@@ -101,7 +107,7 @@ def abrirPanelAdmin():
     btnBarras.grid(row=2, column=1, padx=10, pady=10, sticky="S")
     
     #salir
-    btnSalir = ttk.Button(mainVentanaAdmin, image=fotoSalir)
+    btnSalir = ttk.Button(mainVentanaAdmin, image=fotoSalir, command=lambda:cerrarPanel(mainVentanaAdmin))
     btnSalir.grid(row=2, column=2, padx=10, pady=10, sticky="S")
     
 
@@ -135,7 +141,7 @@ def abrirPanelUser():
     btnPerfil.grid(row=2, column=1, padx=10, pady=10, sticky="S")
     
     #salir
-    btnSalir = ttk.Button(mainVentanaUser, image=fotoSalir)
+    btnSalir = ttk.Button(mainVentanaUser, image=fotoSalir, command=lambda:cerrarPanel(mainVentanaUser))
     btnSalir.grid(row=2, column=2, padx=10, pady=10, sticky="S")
     
 def cambiarContrasenna(contra1, contra2):
