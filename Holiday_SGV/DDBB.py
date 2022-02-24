@@ -27,6 +27,10 @@ class DDBB():
         self.cursor.execute("SELECT COUNT(usuarios.Usuario) FROM usuarios")
         return int(self.cursor.fetchall()[0][0])
     
+    def getUsuarios(self):
+        self.cursor.execute("SELECT usuarios.Usuario FROM usuarios")
+        return self.cursor.fetchall()
+    
     def hacerQuery(self, query):
         self.cursor.execute(query)
         return self.cursor.fetchall()
@@ -42,6 +46,22 @@ class DDBB():
                 existe = True
                 
         return existe
+    
+    def eliminarDiaUsuario(self, user, fecha):
+        salida = ""
+        #no se pueden eliminar fechas que ya han pasado/ya se han disfrutado
+        try:
+            self.cursor.execute("SELECT * FROM fechas WHERE fechas.Fecha = '" + fecha + "' AND fechas.Usuario = '" + user + "' AND fechas.Fecha > NOW()")
+            salida = self.cursor.fetchall()[0][1]
+                
+        except:
+            messagebox.showerror(title="SQL Error", message="Usuario / Fecha no válidos")
+            
+        if salida == user:
+            self.cursor.execute("DELETE FROM fechas WHERE fechas.Fecha = '" + fecha + "' AND fechas.Usuario = '" + user + "' AND fechas.Fecha > NOW()")
+            self.conexion.commit()
+            messagebox.showinfo(title="Operación realizada", message="Se ha eliminado la fecha correctamente")
+        
     
     def cambiarContrasenna(self, usuario, contrasenna):      
         self.cursor.execute("UPDATE usuarios SET usuarios.Contraseña = '" + contrasenna + "' WHERE (usuarios.Usuario = '" + usuario + "');")    
@@ -95,6 +115,29 @@ class DDBB():
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-03-24','Jorge');''')
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-04-25','Jorge');''')
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-26','Jorge');''')
+        
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-01-25','admin');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-02-12','admin');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-03-05','admin');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-04-09','admin');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-15','admin');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-06-30','admin');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-08-11','admin');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-10-04','admin');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-11-17','admin');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-12-26','admin');''')
+        
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-11-22','MarioSantos');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-12-22','MarioSantos');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-22','MarioSantos');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-01-22','MarioSantos');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-03-29','MarioSantos');''')
+        
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-22','Pizarroso');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2021-06-23','Pizarroso');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2021-07-24','Pizarroso');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2020-08-25','Pizarroso');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-09-26','Pizarroso');''')
         
         
         self.conexion.commit()
