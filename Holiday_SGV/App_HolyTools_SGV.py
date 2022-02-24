@@ -101,38 +101,42 @@ def abrirLupaEmpleados(empleado):
     
 
 def buscarInfoLupaAdmins(empleado):
-    global txtUsuarioABuscar, stLupaAdmin
+    global stLupaAdmin
     
     numDiasTotales = baseDeDatos.getDiasTotalesVacacionesDisponiblesDeEmpleado(empleado)
     numDiasQueLeQuedan = baseDeDatos.getNumDiasQueLeQuedan(empleado)
     diasQueLeQuedan = baseDeDatos.getDiasQueLeQuedan(empleado)
     
-    if not txtUsuarioABuscar == "":
+    stLupaAdmin.delete("1.0","end")
+    
+    if baseDeDatos.usuarioExiste(empleado):
         stLupaAdmin.insert(tk.INSERT, "El empleado " + empleado + " tiene un total de " + str(numDiasTotales) + " dias, de los cuales ha disfrutado " + str(numDiasTotales - numDiasQueLeQuedan) + " y por tanto le quedan " + str(numDiasQueLeQuedan) + " por disfrutar.")
         stLupaAdmin.insert(tk.INSERT,"\n\nDias disponibles: \n")
         stLupaAdmin.insert(tk.INSERT,diasQueLeQuedan)
     else:
-        messagebox.showwarning(title="User error", message="No se ha introducido usuario")
+        messagebox.showwarning(title="User error", message="No se ha introducido usuario valido")
     
     
     
 
 def abrirLupaAdministradores():
     
-    global txtUsuarioABuscar, stLupaAdmin
+    global stLupaAdmin
     
     mvLupaAdmin = tk.Toplevel()
     mvLupaAdmin.title("Holiday Tools - Sergio García - 2ºDAM - Gestión vacaciones (Admin)")
     mvLupaAdmin.resizable(False, False)
     
+    ttk.Label(mvLupaAdmin, text="Usuario: ").grid(row=0, column=0, pady=10, sticky="W")
+    
     txtUsuarioABuscar = tk.StringVar()
-    ttk.Entry(mvLupaAdmin, textvariable=txtUsuarioABuscar).grid(row=0, column=0, padx=10, pady=10, sticky="W")
+    ttk.Entry(mvLupaAdmin, textvariable=txtUsuarioABuscar).grid(row=0, column=1, padx=10, pady=10, sticky="W")
     
     stLupaAdmin = scrolledtext.ScrolledText(mvLupaAdmin, height=10, width=50, wrap=tk.WORD)
-    stLupaAdmin.grid(row=1, column=0, padx=10, pady=10)
+    stLupaAdmin.grid(row=1, column=0, padx=10, pady=10, columnspan=3)
     
-    btnMostrarInfo = ttk.Button(mvLupaAdmin, text="Mostrar Información", command=lambda:buscarInfoLupaAdmins(txtUsuario.get()))
-    btnMostrarInfo.grid(row=2, column=0, padx=10, pady=10)
+    btnMostrarInfo = ttk.Button(mvLupaAdmin, text="Mostrar Información", command=lambda:buscarInfoLupaAdmins(txtUsuarioABuscar.get()))
+    btnMostrarInfo.grid(row=2, column=1, padx=10, pady=10)
     
 
     
@@ -206,7 +210,7 @@ def abrirPanelUser():
 def cambiarContrasenna(contra1, contra2):
     global txtUsuario
     
-    print("Usuario: " + txtUsuario.get() + "\n contra1: " + contra1 + "\ncontra2: "+ contra2)
+    #print("Usuario: " + txtUsuario.get() + "\n contra1: " + contra1 + "\ncontra2: "+ contra2)
     
     if contra1 == contra2:
         baseDeDatos.cambiarContrasenna(txtUsuario.get(), contra1)
@@ -219,7 +223,7 @@ def cambiarContrasenna(contra1, contra2):
 def heOlvidadoLaContrasenna():
     global txtUsuario
     
-    if comprobarUsuario():
+    if baseDeDatos.usuarioExiste(txtUsuario.get()):
         
         mainVentanaOlvidoContrasenna = tk.Toplevel()
         mainVentanaOlvidoContrasenna.title("Holiday Tools - Sergio García - 2ºDAM - Restablecer Contraseña")
@@ -269,18 +273,6 @@ def entrarAlPanel():
         hiloUser = Thread(target=abrirPanelUser, name="Hilouser")
         hiloUser.start()
         
-def comprobarUsuario():
-    existe:bool = False
-    
-    global txtUsuario
-    
-    for i in range(baseDeDatos.getNumeroUsuarios()):
-        userActual = baseDeDatos.hacerQuery("SELECT Usuario FROM usuarios")[i][0]
-        if userActual == txtUsuario.get():
-            existe = True
-            
-        
-    return existe
 
 def comprobarContrasenna():
     
@@ -304,7 +296,7 @@ def mostrarLoginSuccesful():
     
 def iniciarSesion():
     
-    if not comprobarUsuario():
+    if not baseDeDatos.usuarioExiste(txtUsuario.get()):
         messagebox.showerror("Usuario erróneo", "El usuario introducido no está registrado")
     else:
         if comprobarContrasenna():

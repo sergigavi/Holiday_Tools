@@ -31,6 +31,18 @@ class DDBB():
         self.cursor.execute(query)
         return self.cursor.fetchall()
     
+    def usuarioExiste(self,u):
+        existe:bool = False
+        
+        global txtUsuario
+        
+        for i in range(self.getNumeroUsuarios()):
+            userActual = self.hacerQuery("SELECT Usuario FROM usuarios")[i][0]
+            if userActual == u:
+                existe = True
+                
+        return existe
+    
     def cambiarContrasenna(self, usuario, contrasenna):      
         self.cursor.execute("UPDATE usuarios SET usuarios.Contraseña = '" + contrasenna + "' WHERE (usuarios.Usuario = '" + usuario + "');")    
         self.conexion.commit()
