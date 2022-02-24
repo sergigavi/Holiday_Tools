@@ -77,6 +77,64 @@ def cerrarPanel(ventana):
     ventana.destroy()
     desMinimizarVentana(mainVentana)
 
+def abrirLupaEmpleados(empleado):
+    
+    
+    mvLupaEmple = tk.Toplevel()
+    mvLupaEmple.title("Holiday Tools - Sergio García - 2ºDAM - Gestión vacaciones (user)")
+    mvLupaEmple.resizable(False, False)
+    
+    numDiasTotales = baseDeDatos.getDiasTotalesVacacionesDisponiblesDeEmpleado(empleado)
+    numDiasQueLeQuedan = baseDeDatos.getNumDiasQueLeQuedan(empleado)
+    diasQueLeQuedan = baseDeDatos.getDiasQueLeQuedan(empleado)
+    
+    #
+    
+    stLupaEmpleados = scrolledtext.ScrolledText(mvLupaEmple, height=10, width=50, wrap=tk.WORD)
+    stLupaEmpleados.grid(row=0, column=0, padx=10, pady=10)
+    stLupaEmpleados.insert(tk.INSERT, "El empleado " + empleado + " tiene un total de " + str(numDiasTotales) + " dias, de los cuales ha disfrutado " + str(numDiasTotales - numDiasQueLeQuedan) + " y por tanto le quedan " + str(numDiasQueLeQuedan) + " por disfrutar.")
+    stLupaEmpleados.insert(tk.INSERT,"\n\nDias disponibles: \n")
+    stLupaEmpleados.insert(tk.INSERT,diasQueLeQuedan)
+    
+    btnEntendido = ttk.Button(mvLupaEmple, text="Entendido", command=mvLupaEmple.destroy)
+    btnEntendido.grid(row=1, column=0, padx=10, pady=10)
+    
+
+def buscarInfoLupaAdmins(empleado):
+    global txtUsuarioABuscar, stLupaAdmin
+    
+    numDiasTotales = baseDeDatos.getDiasTotalesVacacionesDisponiblesDeEmpleado(empleado)
+    numDiasQueLeQuedan = baseDeDatos.getNumDiasQueLeQuedan(empleado)
+    diasQueLeQuedan = baseDeDatos.getDiasQueLeQuedan(empleado)
+    
+    if not txtUsuarioABuscar == "":
+        stLupaAdmin.insert(tk.INSERT, "El empleado " + empleado + " tiene un total de " + str(numDiasTotales) + " dias, de los cuales ha disfrutado " + str(numDiasTotales - numDiasQueLeQuedan) + " y por tanto le quedan " + str(numDiasQueLeQuedan) + " por disfrutar.")
+        stLupaAdmin.insert(tk.INSERT,"\n\nDias disponibles: \n")
+        stLupaAdmin.insert(tk.INSERT,diasQueLeQuedan)
+    else:
+        messagebox.showwarning(title="User error", message="No se ha introducido usuario")
+    
+    
+    
+
+def abrirLupaAdministradores():
+    
+    global txtUsuarioABuscar, stLupaAdmin
+    
+    mvLupaAdmin = tk.Toplevel()
+    mvLupaAdmin.title("Holiday Tools - Sergio García - 2ºDAM - Gestión vacaciones (Admin)")
+    mvLupaAdmin.resizable(False, False)
+    
+    txtUsuarioABuscar = tk.StringVar()
+    ttk.Entry(mvLupaAdmin, textvariable=txtUsuarioABuscar).grid(row=0, column=0, padx=10, pady=10, sticky="W")
+    
+    stLupaAdmin = scrolledtext.ScrolledText(mvLupaAdmin, height=10, width=50, wrap=tk.WORD)
+    stLupaAdmin.grid(row=1, column=0, padx=10, pady=10)
+    
+    btnMostrarInfo = ttk.Button(mvLupaAdmin, text="Mostrar Información", command=lambda:buscarInfoLupaAdmins(txtUsuario.get()))
+    btnMostrarInfo.grid(row=2, column=0, padx=10, pady=10)
+    
+
     
 def abrirPanelAdmin():
     
@@ -99,7 +157,7 @@ def abrirPanelAdmin():
     villa.place(x=520, y=10)
     
     #lupa
-    btnLupa = ttk.Button(mainVentanaAdmin, image=fotoLupa, width=30)
+    btnLupa = ttk.Button(mainVentanaAdmin, image=fotoLupa, width=30, command=abrirLupaAdministradores)
     btnLupa.grid(row=2, column=0, padx=10, pady=10, sticky="S")
     
     #grafico barras
@@ -116,9 +174,10 @@ def abrirPanelUser():
     
     global fotoVillablanca, fotoLupa, fotoPerfil, fotoSalir
     
-    mainVentanaUser = tk.Toplevel()
-    mainVentanaUser.title("Holiday Tools - Sergio García - 2ºDAM - (Empleado) " + txtUsuario.get())
+    empleado=txtUsuario.get()
     limpiarLogin()
+    mainVentanaUser = tk.Toplevel()
+    mainVentanaUser.title("Holiday Tools - Sergio García - 2ºDAM - (Empleado) " + empleado)
     mainVentanaUser.geometry("600x200")
     mainVentanaUser.resizable(False, False)
     
@@ -133,7 +192,7 @@ def abrirPanelUser():
     villa.place(x=520, y=10)
     
     #lupa
-    btnLupa = ttk.Button(mainVentanaUser, image=fotoLupa)
+    btnLupa = ttk.Button(mainVentanaUser, image=fotoLupa, command=lambda:abrirLupaEmpleados(empleado))
     btnLupa.grid(row=2, column=0, padx=10, pady=10, sticky="S")
     
     #perfil

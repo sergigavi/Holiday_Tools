@@ -19,6 +19,8 @@ class DDBB():
         self.cursor = self.conexion.cursor()
         self.cursor.execute("CREATE DATABASE IF NOT EXISTS HolydayToolsDDBB")
         self.cursor.execute("USE HolydayToolsDDBB")
+        
+        #Si quieres probar la base de datos y atacarla puedes 'descomentar' la funcion de debajo una vez
         #self.cargarDatos()
 
     def getNumeroUsuarios(self):
@@ -33,6 +35,21 @@ class DDBB():
         self.cursor.execute("UPDATE usuarios SET usuarios.Contraseña = '" + contrasenna + "' WHERE (usuarios.Usuario = '" + usuario + "');")    
         self.conexion.commit()
         
+    def getDiasTotalesVacacionesDisponiblesDeEmpleado(self, empleado):
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + empleado + "'")
+        numDias = self.cursor.fetchall()[0][0]
+        return numDias
+
+    def getNumDiasQueLeQuedan(self, empleado):
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE fechas.Usuario = '" + empleado + "' AND fechas.Fecha > NOW()")
+        numDias = self.cursor.fetchall()[0][0]
+        return numDias
+    
+    def getDiasQueLeQuedan(self, empleado):
+        self.cursor.execute("SELECT fechas.Fecha FROM fechas WHERE fechas.Usuario = '" + empleado + "' AND fechas.Fecha > NOW()")
+        return self.cursor.fetchall()
+                
     def cargarDatos(self):
         
         #Creo las tablas
@@ -46,7 +63,7 @@ class DDBB():
         ''')
         
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS fechas(
-        Fecha CHAR(10) NOT NULL,
+        Fecha DATE NOT NULL,
         Usuario VARCHAR(30) NOT NULL,
         FOREIGN KEY (Usuario) REFERENCES usuarios(Usuario)
         
@@ -60,6 +77,12 @@ class DDBB():
         self.cursor.execute('''INSERT INTO usuarios VALUES ('Sergio','123abc','administrador');''')
         self.cursor.execute('''INSERT INTO usuarios VALUES ('Pizarroso','vegano','empleado');''')
         self.cursor.execute('''INSERT INTO usuarios VALUES ('Jorge','chispas','empleado');''')
+        
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-01-22','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-02-23','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-03-24','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-04-25','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-26','Jorge');''')
         
         
         self.conexion.commit()
