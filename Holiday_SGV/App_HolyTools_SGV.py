@@ -118,13 +118,18 @@ def buscarInfoLupaAdmins(empleado):
     
     
 def eliminarDiaUsuario(user, fecha):
-    
     baseDeDatos.eliminarDiaUsuario(user, fecha)
+    
+def getDiasRestantesUsuario(u):
+    global cbDias
+    listaDias = baseDeDatos.getDiasQueLeQuedan(u)
+    
+    cbDias["values"]=listaDias
     
 
 def abrirLupaAdministradores():
     
-    global stLupaAdmin
+    global stLupaAdmin, cbDias
     
     mvLupaAdmin = tk.Toplevel()
     mvLupaAdmin.title("Holiday Tools - Sergio García - 2ºDAM - Gestión vacaciones (Admin)")
@@ -139,16 +144,17 @@ def abrirLupaAdministradores():
     stLupaAdmin = scrolledtext.ScrolledText(mvLupaAdmin, height=10, width=50, wrap=tk.WORD)
     stLupaAdmin.grid(row=1, column=0, padx=10, pady=10, columnspan=3)
     
-    btnMostrarInfo = ttk.Button(mvLupaAdmin, text="Mostrar Información", command=lambda:buscarInfoLupaAdmins(txtUsuarioABuscar.get()))
+    btnMostrarInfo = ttk.Button(mvLupaAdmin, text="Mostrar Información", command=lambda:[buscarInfoLupaAdmins(txtUsuarioABuscar.get()), getDiasRestantesUsuario(txtUsuarioABuscar.get())])
     btnMostrarInfo.grid(row=2, column=1, padx=10, pady=10)
     
     ttk.Label(mvLupaAdmin, text="Dia a eliminar: ").grid(row=3, column=0, pady=10, sticky="E")
     
     txtDiaEliminar = tk.StringVar()
     #ttk.Entry(mvLupaAdmin, textvariable=txtDiaEliminar).grid(row=3, column=1, padx=10, pady=10, sticky="W")
-    ttk.Combobox(mvLupaAdmin, textvariable=txtDiaEliminar, values=baseDeDatos.getDiasQueLeQuedan(txtUsuarioABuscar.get())).grid(row=3, column=1, padx=10, pady=10, sticky="W")
+    cbDias = ttk.Combobox(mvLupaAdmin, textvariable=txtDiaEliminar, values=[])
+    cbDias.grid(row=3, column=1, padx=10, pady=10, sticky="W")
     
-    btnEliminarDia = ttk.Button(mvLupaAdmin, text="Eliminar día/fecha", command=lambda:eliminarDiaUsuario(txtUsuarioABuscar.get(), txtDiaEliminar.get()))
+    btnEliminarDia = ttk.Button(mvLupaAdmin, text="Eliminar día/fecha", command=lambda:[eliminarDiaUsuario(txtUsuarioABuscar.get(), txtDiaEliminar.get()), buscarInfoLupaAdmins(txtUsuarioABuscar.get()), getDiasRestantesUsuario(txtUsuarioABuscar.get())])
     btnEliminarDia.grid(row=3, column=2, padx=10, pady=10)
     
 

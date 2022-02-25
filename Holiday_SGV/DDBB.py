@@ -59,8 +59,8 @@ class DDBB():
             
         if salida == user:
             self.cursor.execute("DELETE FROM fechas WHERE fechas.Fecha = '" + fecha + "' AND fechas.Usuario = '" + user + "' AND fechas.Fecha > NOW()")
-            self.conexion.commit()
             messagebox.showinfo(title="Operación realizada", message="Se ha eliminado la fecha correctamente")
+        self.conexion.commit()
         
     
     def cambiarContrasenna(self, usuario, contrasenna):      
