@@ -13,6 +13,7 @@ from tkinter.messagebox import Message
 from Holiday_SGV.DDBB import DDBB
 #from functools import partial #para poder pasar parametros a los commands #no me funciona asi que uso funciones lambda
 from threading import Thread
+from Holiday_SGV.Grafico import Grafico
 
 #
 
@@ -157,7 +158,30 @@ def abrirLupaAdministradores():
     btnEliminarDia = ttk.Button(mvLupaAdmin, text="Eliminar día/fecha", command=lambda:[eliminarDiaUsuario(txtUsuarioABuscar.get(), txtDiaEliminar.get()), buscarInfoLupaAdmins(txtUsuarioABuscar.get()), getDiasRestantesUsuario(txtUsuarioABuscar.get())])
     btnEliminarDia.grid(row=3, column=2, padx=10, pady=10)
     
-
+def mostrarGrafico():
+    Grafico()
+    
+def escribirAlServidor():
+    pass
+    
+def pedirVacacionesBot():
+    mvChatBot = tk.Toplevel()
+    mvChatBot.title("Holiday Tools - Sergio García - 2ºDAM - Pedir vacaciones chat bot")
+    mvChatBot.resizable(False, False)
+    
+    lblChat = ttk.Labelframe(mvChatBot, text="Chat bot vacaciones")
+    lblChat.grid(row=0, column=0, padx=10, pady=10, sticky="W")
+    
+    scrtxtChat = scrolledtext.ScrolledText(lblChat, wrap = tk.WORD, width = 45, height = 25)
+    scrtxtChat.grid(row=0, column=0, padx=10, pady=10, columnspan=2, sticky="W")
+    
+    txtEntryCli = tk.StringVar()
+    
+    entryCli = ttk.Entry(lblChat, width = 48, textvariable=txtEntryCli)
+    entryCli.grid(row=1, column=0, padx=10, pady=10, sticky="W")
+    
+    btnEnviarCli1= ttk.Button(lblChat, text="->", command=lambda:escribirAlServidor())
+    btnEnviarCli1.grid(row=1, column=1, padx=10, pady=10, sticky="W")
     
 def abrirPanelAdmin():
     
@@ -184,7 +208,7 @@ def abrirPanelAdmin():
     btnLupa.grid(row=2, column=0, padx=10, pady=10, sticky="S")
     
     #grafico barras
-    btnBarras = ttk.Button(mainVentanaAdmin, image=fotoBarras)
+    btnBarras = ttk.Button(mainVentanaAdmin, image=fotoBarras, command=lambda:mostrarGrafico())
     btnBarras.grid(row=2, column=1, padx=10, pady=10, sticky="S")
     
     #salir
@@ -219,7 +243,7 @@ def abrirPanelUser():
     btnLupa.grid(row=2, column=0, padx=10, pady=10, sticky="S")
     
     #perfil
-    btnPerfil = ttk.Button(mainVentanaUser, image=fotoPerfil)
+    btnPerfil = ttk.Button(mainVentanaUser, image=fotoPerfil, command=lambda:pedirVacacionesBot())
     btnPerfil.grid(row=2, column=1, padx=10, pady=10, sticky="S")
     
     #salir

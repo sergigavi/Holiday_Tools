@@ -20,7 +20,7 @@ class DDBB():
         self.cursor.execute("CREATE DATABASE IF NOT EXISTS HolydayToolsDDBB")
         self.cursor.execute("USE HolydayToolsDDBB")
         
-        #Si quieres probar la base de datos y atacarla puedes 'descomentar' la funcion de debajo una vez
+        #Si quieres probar la base de datos y atacarla puedes 'descomentar' la funcion de debajo una vez (luego tienes que comentarla y volver a ejecutar)
         #self.cargarDatos()
 
     def getNumeroUsuarios(self):
@@ -30,6 +30,54 @@ class DDBB():
     def getUsuarios(self):
         self.cursor.execute("SELECT usuarios.Usuario FROM usuarios")
         return self.cursor.fetchall()
+    
+    def getFechas(self):
+        self.cursor.execute("SELECT * FROM fechas")
+        return self.cursor.fetchall()
+    
+    #devuelvo una lista de 12 posiciones con el total de fechas de ese empleado en cada mes del año
+    def getNumFechasEmpleadoPorMes(self, emple):
+        lista = []
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + emple +"' AND MONTH(Fecha) = 1")
+        lista.append(self.cursor.fetchall()[0][0])
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + emple +"' AND MONTH(Fecha) = 2")
+        lista.append(self.cursor.fetchall()[0][0])
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + emple +"' AND MONTH(Fecha) = 3")
+        lista.append(self.cursor.fetchall()[0][0])
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + emple +"' AND MONTH(Fecha) = 4")
+        lista.append(self.cursor.fetchall()[0][0])
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + emple +"' AND MONTH(Fecha) = 5")
+        lista.append(self.cursor.fetchall()[0][0])
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + emple +"' AND MONTH(Fecha) = 6")
+        lista.append(self.cursor.fetchall()[0][0])
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + emple +"' AND MONTH(Fecha) = 7")
+        lista.append(self.cursor.fetchall()[0][0])
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + emple +"' AND MONTH(Fecha) = 8")
+        lista.append(self.cursor.fetchall()[0][0])
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + emple +"' AND MONTH(Fecha) = 9")
+        lista.append(self.cursor.fetchall()[0][0])
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + emple +"' AND MONTH(Fecha) = 10")
+        lista.append(self.cursor.fetchall()[0][0])
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + emple +"' AND MONTH(Fecha) = 11")
+        lista.append(self.cursor.fetchall()[0][0])
+        
+        self.cursor.execute("SELECT COUNT(*) FROM fechas WHERE Usuario = '" + emple +"' AND MONTH(Fecha) = 12")
+        lista.append(self.cursor.fetchall()[0][0])
+        
+        #print("lista de dias libres por mes de " + emple)
+        #print(lista)
+        return lista
     
     def hacerQuery(self, query):
         self.cursor.execute(query)
@@ -110,12 +158,6 @@ class DDBB():
         self.cursor.execute('''INSERT INTO usuarios VALUES ('Pizarroso','vegano','empleado');''')
         self.cursor.execute('''INSERT INTO usuarios VALUES ('Jorge','chispas','empleado');''')
         
-        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-01-22','Jorge');''')
-        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-02-23','Jorge');''')
-        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-03-24','Jorge');''')
-        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-04-25','Jorge');''')
-        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-26','Jorge');''')
-        
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-01-25','admin');''')
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-02-12','admin');''')
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-03-05','admin');''')
@@ -132,12 +174,42 @@ class DDBB():
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-22','MarioSantos');''')
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-01-22','MarioSantos');''')
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-03-29','MarioSantos');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-11-15','MarioSantos');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-12-30','MarioSantos');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-11','MarioSantos');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-01-25','MarioSantos');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-03-05','MarioSantos');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-11','MarioSantos');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-21','MarioSantos');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-06','MarioSantos');''')
+        
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-11-22','Sergio');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-12-22','Sergio');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-22','Sergio');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-01-22','Sergio');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-03-29','Sergio');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-11-14','Sergio');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-12-15','Sergio');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-14','Sergio');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-01-11','Sergio');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-03-12','Sergio');''')
         
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-22','Pizarroso');''')
         self.cursor.execute('''INSERT INTO fechas VALUES ('2021-06-23','Pizarroso');''')
         self.cursor.execute('''INSERT INTO fechas VALUES ('2021-07-24','Pizarroso');''')
         self.cursor.execute('''INSERT INTO fechas VALUES ('2020-08-25','Pizarroso');''')
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-09-26','Pizarroso');''')
+        
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-01-22','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-02-23','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-03-24','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-04-25','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-05-26','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-04-15','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-04-16','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-12-13','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-12-12','Jorge');''')
+        self.cursor.execute('''INSERT INTO fechas VALUES ('2022-12-11','Jorge');''')
         
         
         self.conexion.commit()
