@@ -25,7 +25,7 @@ class Grafico():
         ejes = miFigura.add_subplot(111)
     
         ejes.set_xlim(0, 11) #meses
-        ejes.set_ylim(0, 31) #dias
+        #ejes.set_ylim(0, 31) #dias
     
         e0, = ejes.plot(meses, db.getNumFechasEmpleadoPorMes("admin"), color='green')
         e1, = ejes.plot(meses, db.getNumFechasEmpleadoPorMes("MarioSantos"), color='blue')

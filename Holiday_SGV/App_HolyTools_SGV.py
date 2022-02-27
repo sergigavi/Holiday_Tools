@@ -11,9 +11,10 @@ import tkinter as tk
 from tkinter import ttk,messagebox, scrolledtext
 from tkinter.messagebox import Message 
 from Holiday_SGV.DDBB import DDBB
-#from functools import partial #para poder pasar parametros a los commands #no me funciona asi que uso funciones lambda
 from threading import Thread
+import time
 from Holiday_SGV.Grafico import Grafico
+from socket import socket, AF_INET, SOCK_STREAM
 
 #
 
@@ -161,10 +162,26 @@ def abrirLupaAdministradores():
 def mostrarGrafico():
     Grafico()
     
-def escribirAlServidor():
-    pass
+def escribirAlServidor(empleado):
+    global scrtxtChat
     
-def pedirVacacionesBot():
+    sock = socket(AF_INET, SOCK_STREAM)
+    sock.connect(('localhost', 24000))
+    
+    scrtxtChat.insert(tk.INSERT, "Bienvenido al bot para seleccionar dias de vacaciones, escriba la fecha deseada en formato YYYY-mm-dd")
+    
+    if not empleado == None or not empleado == "":
+        sock.send(bytes(empleado.get().encode()))
+        bloque=sock.recv(8192).decode()
+        
+        scrtxtChat.insert(tk.INSERT, bloque)
+        
+    else:
+        messagebox.showinfo(title="Fecha vacía", message="Debes introducir una fecha válida")
+    
+def pedirVacacionesBot(empleado):
+    global scrtxtChat
+    
     mvChatBot = tk.Toplevel()
     mvChatBot.title("Holiday Tools - Sergio García - 2ºDAM - Pedir vacaciones chat bot")
     mvChatBot.resizable(False, False)
@@ -180,8 +197,16 @@ def pedirVacacionesBot():
     entryCli = ttk.Entry(lblChat, width = 48, textvariable=txtEntryCli)
     entryCli.grid(row=1, column=0, padx=10, pady=10, sticky="W")
     
-    btnEnviarCli1= ttk.Button(lblChat, text="->", command=lambda:escribirAlServidor())
-    btnEnviarCli1.grid(row=1, column=1, padx=10, pady=10, sticky="W")
+    btnEnviarCli= ttk.Button(lblChat, text="->", command=lambda:escribirAlServidor(empleado))
+    btnEnviarCli.grid(row=1, column=1, padx=10, pady=10, sticky="W")
+    
+def cuentaAtrasCerrarVentana(v):
+    time.sleep(300)
+    messagebox.showwarning(title="Auto apagado", message="Se va a cerrar la ventana de administrador, tiempo límite (5 minutos) excedido")
+    t = Thread(target=time.sleep(10), name="")
+    t.start()
+    #podría poner el time.sleep directamente pero me hace que no se pueda interactuar con el messagebox hasta que no termine el tiempo
+    cerrarPanel(v)
     
 def abrirPanelAdmin():
     
@@ -192,6 +217,10 @@ def abrirPanelAdmin():
     limpiarLogin()
     mainVentanaAdmin.geometry("600x200")
     mainVentanaAdmin.resizable(False, False)
+    
+    #
+    hiloCerrarVentanaAdmin = Thread(target=lambda:cuentaAtrasCerrarVentana(mainVentanaAdmin), name="hiloCerrarVentanaAdmin")
+    hiloCerrarVentanaAdmin.start()
     
     ttk.Label(mainVentanaAdmin, text="Administrador", font=("bold",18), foreground="#FF0DE3").grid(row=0, column=0, padx=10, pady=10, columnspan=3, sticky="S")
     
@@ -243,7 +272,7 @@ def abrirPanelUser():
     btnLupa.grid(row=2, column=0, padx=10, pady=10, sticky="S")
     
     #perfil
-    btnPerfil = ttk.Button(mainVentanaUser, image=fotoPerfil, command=lambda:pedirVacacionesBot())
+    btnPerfil = ttk.Button(mainVentanaUser, image=fotoPerfil, command=lambda:pedirVacacionesBot(empleado))
     btnPerfil.grid(row=2, column=1, padx=10, pady=10, sticky="S")
     
     #salir

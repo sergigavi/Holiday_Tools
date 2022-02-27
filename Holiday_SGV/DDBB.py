@@ -211,6 +211,16 @@ class DDBB():
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-12-12','Jorge');''')
         self.cursor.execute('''INSERT INTO fechas VALUES ('2022-12-11','Jorge');''')
         
+        #parte del chat del bot
+        
+        #self.cursor.execute('''CREATE TABLE IF NOT EXISTS chatBot(
+        #Pregunta VARCHAR(50) NOT NULL PRIMARY KEY,
+        #Respuesta VARCHAR(50) NOT NULL        
+        #)ENGINE=InnoDB;
+        #''')
+        
+        #self.cursor.execute('''INSERT INTO chatBot VALUES ('2022-12-11','Jorge');''')
+        
         
         self.conexion.commit()
     
